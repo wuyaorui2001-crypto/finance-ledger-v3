@@ -127,9 +127,25 @@ python scripts/validate.py
 - **PATTERN-001**: 长期数据存储必须支持分片
 - **PATTERN-004**: 自动化脚本优先使用Python，避免emoji
 
-## 7. 可迁移性说明
+## 7. 可迁移性说明 + GitHub 集成
 
 **符合 agent-workspace PATTERN-005 标准**
+
+### GitHub 仓库
+- **账本仓库**: https://github.com/wuyaorui2001-crypto/finance-ledger-v3
+- **核心资产库**: https://github.com/wuyaorui2001-crypto/agentworkspace
+
+### 恢复方法
+```bash
+# 克隆仓库
+git clone https://github.com/wuyaorui2001-crypto/finance-ledger-v3.git
+cd finance-ledger-v3
+
+# 读取 SYSTEM.md → 理解SOP → 开始工作
+cat SYSTEM.md
+```
+
+**可视化仪表盘**: https://wuyaorui2001-crypto.github.io/finance-ledger-v3/
 
 ### 迁移测试
 复制本目录到新设备后，新Agent应能：

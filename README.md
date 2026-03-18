@@ -4,6 +4,30 @@
 
 ---
 
+## 🔗 GitHub 仓库
+
+| 项目 | 地址 | 说明 |
+|-----|------|------|
+| **财务账本** | https://github.com/wuyaorui2001-crypto/finance-ledger-v3 | 账本数据与可视化 |
+| **核心资产库** | https://github.com/wuyaorui2001-crypto/agentworkspace | 规则、技能、记忆 |
+
+### 恢复方法
+新设备/Agent 恢复：
+```bash
+# 1. 克隆账本仓库
+git clone https://github.com/wuyaorui2001-crypto/finance-ledger-v3.git
+cd finance-ledger-v3
+
+# 2. 读取 SYSTEM.md 理解记账规则
+cat SYSTEM.md
+
+# 3. 开始记账
+```
+
+**可视化仪表盘**: https://wuyaorui2001-crypto.github.io/finance-ledger-v3/
+
+---
+
 ## 📋 仓库结构
 
 ```
