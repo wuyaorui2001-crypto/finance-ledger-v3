@@ -17,8 +17,8 @@
 2. 找到当前月份区块
 3. 按格式追加新记录到"当月流水明细"
 4. 更新"当月数据面板"统计数字
-5. 运行 `python scripts/validate.py` 校验格式
-6. 提交变更（如用户要求）
+5. 运行 `python auto-sync.py` 自动同步到GitHub
+6. GitHub Actions 自动更新可视化仪表盘
 
 ### 场景B：创建新年度
 1. 运行 `python scripts/new_year.py 20XX`
@@ -166,11 +166,59 @@ cat SYSTEM.md
 3. 读取 `INDEX.md` → 查看多年度汇总
 4. 开始记账
 
-### GitHub 集成
-- **仓库**: https://github.com/wuyaorui2001-crypto/finance-ledger-v3
-- **仪表盘**: https://wuyaorui2001-crypto.github.io/finance-ledger-v3/
-- **自动部署**: 推送代码后 GitHub Actions 自动更新可视化
+## 8. 自动同步工作流
+
+### 完整流程
+
+```
+用户记账 → AI记录到 YYYY.md → 运行 auto-sync.py → 推送到GitHub → GitHub Actions部署仪表盘
+```
+
+### Agent操作步骤
+
+当用户记账后：
+
+1. **记录账单**
+   - 读取当前年度文件
+   - 按格式追加记录
+   - 更新当月数据面板
+
+2. **自动同步**（每次记录后执行）
+   ```bash
+   python auto-sync.py
+   ```
+   
+   此脚本会自动：
+   - 校验数据格式 (`scripts/validate.py`)
+   - 更新多年度分析 (`scripts/analyze.py`)
+   - 生成可视化报表 (`scripts/visualize.py`)
+   - 提交所有更改到 Git
+   - 推送到 GitHub
+   - GitHub Actions 自动部署到 Pages
+
+3. **通知用户**
+   - 告知记账已完成
+   - 提供可视化仪表盘链接
+   - 说明部署等待时间（1-2分钟）
+
+### 手动同步（备用）
+
+如果自动同步失败，可手动执行：
+
+```bash
+# 进入项目目录
+cd "D:\Me\u0026AI\Project\finance-ledger-v3-optimized"
+
+# 运行同步脚本
+python auto-sync.py
+```
+
+### 查看可视化仪表盘
+
+- **在线地址**: https://wuyaorui2001-crypto.github.io/finance-ledger-v3/
+- **部署状态**: https://github.com/wuyaorui2001-crypto/finance-ledger-v3/actions
 
 ---
 
-*最后更新：2025-03-18*
+*最后更新：2026-03-18*
+*版本：v3.2*
