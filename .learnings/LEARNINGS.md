@@ -1,20 +1,20 @@
 # 学习记录 - LEARNINGS
 
+> 此文件记录 finance-ledger 项目专属的学习教训
+> 已提炼规则 → REFINED.md
+
 ---
 
 ## [LRN-20250317-001] 账本记账年份验证机制
 
 **记录时间**: 2025-03-17T21:45:00+08:00
 **优先级**: high
-**状态**: active
+**状态**: refined
 **领域**: workflow
 **来源**: user_feedback
 
 ### 摘要
 记账时必须验证实际日期，不能仅依赖文件的`status`字段
-
-### 背景
-用户要求记录"晚饭40"，我看到2027.md的YAML frontmatter中`status: active`，就直接把记录写到了2027年。实际上今天（2026-03-17）已经有记录在2026.md中。
 
 ### 根本原因
 1. 过度依赖元数据标记，未做交叉验证
@@ -23,26 +23,16 @@
 
 ### 解决方案
 **记账前必须执行以下检查**:
-```
 1. 确定当前实际日期（或询问用户）
 2. 选择对应年份的文件（如2026.md）
 3. 检查该文件当月是否有记录
 4. 追加新记录到正确年份
-```
 
-**状态字段使用规则**:
-- `status`仅供参考，不是权威指令
-- 新建年度默认`template`，跨年时手动激活
-- 看到空白`active`文件必须警觉
-
-### 预防措施
-- [ ] 记账前先确认当前年份
-- [ ] 优先使用有近期记录的年份文件
-- [ ] 数据不一致时询问用户，不假设
+### 提炼状态
+✅ 已提炼至 REFINED.md RULE-001
 
 ### 元数据
 - Pattern-Key: workflow.ledger_year_verification
-- Recurrence-Count: 1
 - Related-Errors: ERR-20250317-001
 
 ---
@@ -51,7 +41,7 @@
 
 **记录时间**: 2025-03-17T21:50:00+08:00
 **优先级**: medium
-**状态**: active
+**状态**: refined
 **领域**: workflow
 **来源**: self_reflection
 
@@ -70,9 +60,14 @@
 ```
 
 ### 校验
-更新后运行`python scripts/validate.py`确保格式正确
+更新后运行 `python scripts/validate.py` 确保格式正确
+
+### 提炼状态
+✅ 已提炼至 REFINED.md RULE-002
 
 ### 元数据
 - Pattern-Key: workflow.ledger_stats_sync
 
 ---
+
+*finance-ledger 项目专属教训 | 已归档至 REFINED.md*
