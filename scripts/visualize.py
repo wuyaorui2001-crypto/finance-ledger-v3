@@ -13,7 +13,6 @@ import sys
 
 # 配置
 PROJECT_DIR = Path(__file__).parent.parent
-DATA_FILE = PROJECT_DIR / "2026.md"
 OUTPUT_FILE = PROJECT_DIR / "reports" / "index.html"  # GitHub Pages 需要 index.html
 
 def parse_ledger(filepath):
@@ -21,10 +20,10 @@ def parse_ledger(filepath):
     records = []
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
-    
+
     # 匹配记录格式: - 2026-03-18 | 支出 | [分类] | #标签 | ￥金额 | 描述
     pattern = r'- (\d{4}-\d{2}-\d{2}) \| (\w+) \| \[(.+?)\] \| #(.+?) \| ￥([\d,\.]+) \| (.+)'
-    
+
     for match in re.finditer(pattern, content):
         date_str, type_, category, tag, amount_str, desc = match.groups()
         amount = float(amount_str.replace(',', ''))
@@ -36,10 +35,27 @@ def parse_ledger(filepath):
             'amount': amount,
             'desc': desc.strip()
         })
-    
+
     return records
 
-def generate_dashboard(records):
+
+def parse_all_years():
+    """解析所有年度数据文件"""
+    all_records = []
+    year_files = sorted(PROJECT_DIR.glob('*.md'))
+
+    for filepath in year_files:
+        # 跳过非年度文件
+        if filepath.name in ['README.md', 'MEMORY.md', 'SYSTEM.md', 'INDEX.md', '2027.md']:
+            continue
+        if not re.match(r'^\d{4}\.md$', filepath.name):
+            continue
+        records = parse_ledger(filepath)
+        all_records.extend(records)
+
+    return all_records
+
+def generate_dashboard(records, year=None):
     """生成HTML报表"""
     
     # 统计数据
@@ -67,11 +83,15 @@ def generate_dashboard(records):
             monthly_stats[month]['income'] += r['amount']
     
     # 生成HTML
+    if records:
+        display_year = year if year else f"{min(r['date'][:4] for r in records)}-{max(r['date'][:4] for r in records)}"
+    else:
+        display_year = year if year else str(datetime.now().year)
     html = f'''<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>财务账本可视化 - 2026</title>
+    <title>财务账本可视化 - {display_year}</title>
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <style>
         body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 20px; background: #f5f5f5; }}
@@ -93,7 +113,7 @@ def generate_dashboard(records):
     <div class="container">
         <div class="header">
             <h1>📊 财务账本可视化报表</h1>
-            <p>2026年度 | 生成时间: {datetime.now().strftime('%Y-%m-%d %H:%M')}</p>
+            <p>{display_year}年度 | 生成时间: {datetime.now().strftime('%Y-%m-%d %H:%M')}</p>
         </div>
         
         <div class="stats-grid">
@@ -175,28 +195,28 @@ def generate_dashboard(records):
 
 def main():
     print("[INFO] 开始生成可视化报表...")
-    
-    # 检查数据文件
-    if not DATA_FILE.exists():
-        print(f"[ERROR] 数据文件不存在: {DATA_FILE}")
-        sys.exit(1)
-    
+
     # 创建输出目录
     OUTPUT_FILE.parent.mkdir(exist_ok=True)
-    
-    # 解析数据
-    print(f"[INFO] 解析数据文件: {DATA_FILE}")
-    records = parse_ledger(DATA_FILE)
+
+    # 解析所有年度数据
+    print(f"[INFO] 解析年度数据文件...")
+    records = parse_all_years()
     print(f"[INFO] 找到 {len(records)} 条记录")
-    
+
+    if not records:
+        print("[WARN] 没有找到任何记账记录")
+        # 生成空白报表
+        records = []
+
     # 生成报表
     print("[INFO] 生成HTML报表...")
     html = generate_dashboard(records)
-    
+
     # 保存文件
     with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
         f.write(html)
-    
+
     print(f"[OK] 报表已保存: {OUTPUT_FILE}")
     print(f"[INFO] 请在浏览器中打开查看")
 

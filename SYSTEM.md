@@ -118,7 +118,30 @@ python scripts/visualize.py
 
 # 校验所有年度
 python scripts/validate.py
+
+# 检查当前应记账年份（推荐记账前执行）
+python scripts/validate.py --check-active
+
+# 计算统计数据（dry-run模式，只输出）
+python scripts/recalc.py
+
+# 计算统计数据并更新文件
+python scripts/recalc.py --update
 ```
+
+#### 统一解析模块 (parser.py)
+提供标准接口解析账本记录：
+- `parse_record(line)`: 解析单条记账记录
+- `parse_year_file(filepath)`: 解析年度文件，返回所有记录列表
+- `get_current_year()`: 获取当前应记账的年份（基于实际日期）
+- `get_active_year_file()`: 获取当前应记录的年度文件路径
+
+#### 集中配置 (config.py)
+包含所有配置常量：
+- `CATEGORIES`: 六维主分类列表
+- `LEDGER_CATEGORIES`: 子标签到主分类的映射
+- `YEAR_FILES_PATH`: 年度文件目录
+- `REPORTS_PATH`: 报表输出目录
 
 ---
 
@@ -248,5 +271,5 @@ python auto-sync.py
 
 ---
 
-*最后更新：2026-03-19*
-*版本：v3.3*
+*最后更新：2026-03-25*
+*版本：v3.2*

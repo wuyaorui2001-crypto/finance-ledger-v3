@@ -30,12 +30,14 @@ def run_command(cmd, cwd=None):
     except Exception as e:
         return False, "", str(e)
 
-def sync_to_github():
+def sync_to_github(dry_run=False):
     """同步到GitHub"""
     project_dir = Path(__file__).parent
-    
+
     print("[INFO] 开始同步 Finance Ledger 到 GitHub...")
-    
+    if dry_run:
+        print("[INFO] [DRY-RUN 模式] 不会执行任何更改")
+
     # 1. 校验数据格式
     print("[INFO] 校验数据格式...")
     success, stdout, stderr = run_command("python scripts/validate.py", cwd=project_dir)
@@ -43,7 +45,7 @@ def sync_to_github():
         print(f"[ERROR] 数据校验失败，请检查格式")
         return False
     print("[OK] 数据校验通过")
-    
+
     # 2. 更新多年度分析
     print("[INFO] 更新多年度分析...")
     success, stdout, stderr = run_command("python scripts/analyze.py", cwd=project_dir)
@@ -51,7 +53,7 @@ def sync_to_github():
         print("[OK] 分析完成")
     else:
         print("[WARN] 分析脚本执行失败，继续同步...")
-    
+
     # 3. 生成可视化报表
     print("[INFO] 生成可视化报表...")
     success, stdout, stderr = run_command("python scripts/visualize.py", cwd=project_dir)
@@ -59,25 +61,29 @@ def sync_to_github():
         print("[OK] 报表生成完成")
     else:
         print("[WARN] 可视化脚本执行失败，继续同步...")
-    
+
     # 4. 检查是否有更改
     print("[INFO] 检查Git状态...")
     success, stdout, stderr = run_command("git status --porcelain", cwd=project_dir)
     if not success:
         print(f"[ERROR] Git状态检查失败")
         return False
-    
+
     if not stdout.strip():
         print("[INFO] 没有需要同步的更改")
         return True
-    
+
+    if dry_run:
+        print(f"[INFO] [DRY-RUN] 以下文件将被提交:\n{stdout}")
+        return True
+
     # 5. 添加所有更改
     print("[INFO] 添加更改到Git...")
     success, _, stderr = run_command("git add .", cwd=project_dir)
     if not success:
         print(f"[ERROR] Git add 失败")
         return False
-    
+
     # 6. 提交
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
     commit_msg = f"自动同步: 更新账本记录 @ {timestamp}"
@@ -86,7 +92,7 @@ def sync_to_github():
     if not success:
         print(f"[ERROR] Git commit 失败")
         return False
-    
+
     # 7. 推送到GitHub（先尝试main，失败则尝试master）
     print("[INFO] 推送到GitHub...")
     success, stdout, stderr = run_command("git push origin main", cwd=project_dir)
@@ -96,12 +102,13 @@ def sync_to_github():
         if not success:
             print(f"[ERROR] Git push 失败（main和master都失败）")
             return False
-    
+
     print("[OK] 同步完成!")
     print(f"[INFO] 查看可视化仪表盘: https://wuyaorui2001-crypto.github.io/finance-ledger-v3/")
     print(f"[INFO] 部署需要1-2分钟，请稍后刷新查看")
     return True
 
 if __name__ == "__main__":
-    success = sync_to_github()
+    dry_run = "--dry-run" in sys.argv
+    success = sync_to_github(dry_run=dry_run)
     sys.exit(0 if success else 1)

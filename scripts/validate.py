@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 账本数据格式校验脚本
 验证每条记录是否符合规范格式
+
+支持参数:
+    python validate.py [year]     - 验证指定年份
+    python validate.py --check-active  - 检查当前应记录哪个年份
 """
 
 import re
 import sys
 from pathlib import Path
 
-# 六维主分类
-VALID_CATEGORIES = [
-    "生存基线",
-    "精力与健康维护",
-    "杠杆与生产力",
-    "资产与储备",
-    "弹性消耗",
-    "资金流入"
-]
+# 导入统一配置
+sys.path.insert(0, str(Path(__file__).parent))
+from config import CATEGORIES as VALID_CATEGORIES
+from parser import get_current_year, get_or_default_year_file, parse_year_file
 
 # 记账记录正则
 RECORD_PATTERN = re.compile(
@@ -108,8 +108,66 @@ def validate_year_file(year: int) -> tuple[bool, list[str]]:
     return len(errors) == 0, report
 
 
+def check_active_year():
+    """
+    检查当前应记录哪个年份，输出原因
+    遵循 PATTERN-006 元数据标记必须交叉验证原则
+    """
+    current_year = get_current_year()
+    filepath, _ = get_or_default_year_file(current_year)
+
+    print(f"\n[当前应记账年份检查]")
+    print(f"=" * 50)
+    print(f"当前日期: {datetime.now().strftime('%Y-%m-%d')}")
+    print(f"判断年份: {current_year}")
+    print(f"判断依据: 基于系统实际日期")
+    print()
+
+    # 检查文件是否存在
+    if filepath.exists():
+        # 检查是否有记录
+        records = parse_year_file(filepath)
+        if records:
+            # 检查最新记录日期
+            latest_date = max(r['date'] for r in records)
+            print(f"[OK] {filepath.name} 存在")
+            print(f"[INFO] 包含 {len(records)} 条记录")
+            print(f"[INFO] 最新记录日期: {latest_date}")
+            print()
+            print(f"结论: 应在 {current_year}.md 记账")
+        else:
+            print(f"[OK] {filepath.name} 存在但为空")
+            print()
+            print(f"结论: 应在 {current_year}.md 记账")
+    else:
+        print(f"[WARN] {filepath.name} 不存在")
+        print(f"[INFO] 当前年份: {current_year}")
+        print()
+        print(f"结论: 应创建 {current_year}.md 开始记账")
+
+    # 检查是否存在未来年份文件（异常检测）
+    base_dir = Path(__file__).parent.parent
+    future_years = []
+    for y in range(current_year + 1, current_year + 5):
+        if (base_dir / f"{y}.md").exists():
+            future_years.append(y)
+
+    if future_years:
+        print(f"\n[WARN] 发现未来年份文件: {future_years}")
+        print(f"[INFO] 这可能表示预创建了未来账本，但当前不应写入")
+
+    return current_year
+
+
+from datetime import datetime
+
+
 def main():
-    if len(sys.argv) > 1:
+    if '--check-active' in sys.argv:
+        # 检查当前应记录哪个年份
+        check_active_year()
+        sys.exit(0)
+    elif len(sys.argv) > 1:
         # 验证指定年份
         year = int(sys.argv[1])
         success, report = validate_year_file(year)

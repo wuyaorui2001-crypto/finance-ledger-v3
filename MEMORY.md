@@ -71,6 +71,42 @@
 **通用规则沉淀**：
 - 已抽象为 PATTERN-005（项目可迁移性设计标准）
 
+## 2026-03-25 | 账本优化 v3.2 - 统一解析与配置
+
+**背景**：团队讨论确定4个优化方案，需要执行并确保下一代Agent能无缝继承
+
+**执行内容**：
+1. 创建 `scripts/parser.py` - 统一解析模块
+   - `parse_record(line)`: 解析单条记账记录
+   - `parse_year_file(filepath)`: 解析年度文件
+   - `get_current_year()`: 获取当前应记账年份
+   - 遵循 PATTERN-006 元数据标记必须交叉验证原则
+
+2. 创建 `scripts/config.py` - 集中配置
+   - `CATEGORIES`: 六维主分类列表
+   - `LEDGER_CATEGORIES`: 子标签到主分类的映射表
+   - `YEAR_FILES_PATH`, `REPORTS_PATH` 等路径常量
+
+3. 创建 `scripts/recalc.py` - 自动计算统计
+   - 读取年度文件，根据流水明细计算各项统计
+   - 支持 `--dry-run` 参数（只输出不写入）
+   - 支持 `--update` 参数（实际更新文件）
+   - 输出各月度面板数据 + 年度总览
+
+4. 改造 `scripts/validate.py`
+   - 新增 `--check-active` 参数：检查当前应记录哪个年份
+   - 复用 parser.py 的解析函数
+
+5. 更新 `SYSTEM.md`
+   - 在"自动化工具"章节添加 parser.py/config.py/recalc.py 说明
+
+**存量数据保护**：
+- 2026.md 和 2027.md 原始数据只读不修改
+- 备份位置：`C:\Users\wuyao\2026.md.bak` 和 `C:\Users\wuyao\2027.md.bak`
+
+**同步策略**：
+- auto-sync.py 改为每周定时+手动触发（本次不改动逻辑，只在文档说明）
+
 ## 待记录
 
 - 后续遇到的问题和解决方案在此追加
