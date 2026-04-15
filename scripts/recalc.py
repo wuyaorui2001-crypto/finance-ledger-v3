@@ -170,30 +170,133 @@ def read_year_file(filepath: Path) -> str:
 def update_file_stats_panel(filepath: Path, year_stats: Dict[str, Any], monthly_stats: Dict[str, Any]) -> bool:
     """
     更新文件中的统计面板
-
-    参数:
-        filepath: 年度文件路径
-        year_stats: 年度统计数据
-        monthly_stats: 月度统计数据字典
-
-    返回:
-        是否更新成功
     """
     if not filepath.exists():
         print(f"[ERROR] 文件不存在: {filepath}")
         return False
 
-    content = read_year_file(filepath)
+    with open(filepath, 'r', encoding='utf-8') as f:
+        raw = f.read()
 
-    # 更新年度面板（查找第一个月份区块后的年度汇总位置）
-    # 这里简单处理：直接读取并重新生成
-    # 实际应用中可能需要更复杂的替换逻辑
+    year = year_stats['year']
+    te = year_stats['total_expense']
+    ti = year_stats['total_income']
+    nb = year_stats['net_balance']
+    cat_break = year_stats['category_breakdown']
+
+    # 用锚点分段处理：找到每个章节的起止位置
+    # 章节顺序：年度总览 → 分类结构 → 01月 → 02月 → ... → 12月
+    # 每个章节：[标题行, ---分隔行, 内容]
+
+    annual_start = raw.find(f"## 📊 {year}年度总览")
+    if annual_start == -1:
+        print("[ERROR] 未找到年度总览章节")
+        return False
+
+    # 年度总览表格替换（只替换4行数据，保留表头+分隔符+末尾空行）
+    sep_line_pos = raw.find("|------|------|", annual_start)
+    if sep_line_pos == -1:
+        print("[ERROR] 未找到年度表格分隔符")
+        return False
+
+    # 分隔符行之后是数据行，找到数据行开始
+    data_start = raw.find("\n", sep_line_pos) + 1
+    # 跳过4行数据：年度总支出/总收入/净结余/月均支出
+    data_end = data_start
+    for _ in range(4):
+        nl = raw.find("\n", data_end)
+        if nl == -1:
+            break
+        data_end = nl + 1
+
+    new_data = (
+        f"| 年度总支出 | ￥{te:,.2f} |\n"
+        f"| 年度总收入 | ￥{ti:,.2f} |\n"
+        f"| 年度净结余 | ￥{nb:,.2f} |\n"
+        f"| 月均支出 | ￥{te/12:,.2f} |\n"
+    )
+    raw = raw[:data_start] + new_data + raw[data_end:]
+
+    # 重新计算分类结构位置（因为上面替换可能改变了偏移量）
+    annual_start_new = raw.find(f"## 📊 {year}年度总览")
+    cat_start = raw.find("### 分类支出结构", annual_start_new)
+    if cat_start != -1:
+        # 找到所有分类行到下一个空行或非分类行
+        line_pos = cat_start
+        while line_pos < len(raw) and raw[line_pos] != '\n':
+            line_pos += 1
+        line_pos += 1  # past \n
+
+        # 收集分类行
+        cat_lines_end = line_pos
+        while True:
+            if raw[cat_lines_end:].startswith("- ["):
+                end = raw.find("\n", cat_lines_end)
+                cat_lines_end = end + 1
+            else:
+                break
+
+        cat_lines_new = []
+        for cat, amount in sorted(cat_break.items(), key=lambda x: x[1], reverse=True):
+            pct = amount / te * 100 if te > 0 else 0
+            cat_lines_new.append(f"- [{cat}]：￥{amount:,.2f}（{pct:.1f}%）")
+        cat_block_new = "\n".join(cat_lines_new) + "\n\n"
+
+        raw = raw[:line_pos] + cat_block_new + raw[cat_lines_end:]
+
+    # 月度面板替换
+    month_pattern = re.compile(r"^### (\d{2})月\s*$", re.MULTILINE)
+    for m_match in month_pattern.finditer(raw):
+        m = m_match.group(1)
+        m_stats = monthly_stats.get(m, {})
+        if m_stats.get('record_count', 0) == 0:
+            continue
+
+        section_start = m_match.start()
+        # 找"#### 当月数据面板"
+        panel_header_pos = raw.find("#### 当月数据面板", section_start)
+        if panel_header_pos == -1:
+            continue
+
+        # 找到面板表格（从分隔符开始）
+        sep_pos = raw.find("\n", panel_header_pos)
+        if sep_pos == -1:
+            continue
+        sep_pos += 1  # past newline
+
+        # 收集6行面板（| 指标 | 数值 | + |------|------| + 4个数据行）
+        pos = sep_pos
+        rows_collected = 0
+        table_end = sep_pos
+        while rows_collected < 6 and pos < len(raw):
+            next_nl = raw.find("\n", pos)
+            if next_nl == -1:
+                break
+            table_end = next_nl + 1
+            rows_collected += 1
+            pos = next_nl + 1
+
+        m_te = m_stats['total_expense']
+        m_ti = m_stats['total_income']
+        m_nb = m_stats['net_balance']
+        m_sr = m_stats['survival_ratio']
+        new_panel = (
+            "| 指标 | 数值 |\n"
+            "|------|------|\n"
+            f"| 总支出 | ￥{m_te:,.2f} |\n"
+            f"| 总收入 | ￥{m_ti:,.2f} |\n"
+            f"| 净结余 | ￥{m_nb:,.2f} |\n"
+            f"| 生存基线占比 | {m_sr:.1f}% |\n"
+        )
+        raw = raw[:sep_pos] + new_panel + raw[table_end:]
+
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(raw)
 
     print(f"[INFO] 更新 {filepath.name} 统计面板...")
-    print(f"[INFO] 年度总支出: ￥{year_stats['total_expense']:,.2f}")
-    print(f"[INFO] 年度总收入: ￥{year_stats['total_income']:,.2f}")
-    print(f"[INFO] 年度净结余: ￥{year_stats['net_balance']:,.2f}")
-
+    print(f"[INFO] 年度总支出: ￥{te:,.2f}")
+    print(f"[INFO] 年度总收入: ￥{ti:,.2f}")
+    print(f"[INFO] 年度净结余: ￥{nb:,.2f}")
     return True
 
 
