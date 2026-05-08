@@ -46,6 +46,14 @@ def sync_to_github(dry_run=False):
         return False
     print("[OK] 数据校验通过")
 
+    # 1.5 自动重算统计数据面板（确保面板与明细一致）
+    print("[INFO] 重算统计数据面板...")
+    success, stdout, stderr = run_command("python scripts/recalc.py --update", cwd=project_dir)
+    if success:
+        print("[OK] 面板重算完成")
+    else:
+        print("[WARN] 面板重算失败，继续同步...")
+
     # 2. 更新多年度分析
     print("[INFO] 更新多年度分析...")
     success, stdout, stderr = run_command("python scripts/analyze.py", cwd=project_dir)

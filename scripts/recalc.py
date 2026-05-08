@@ -209,11 +209,15 @@ def update_file_stats_panel(filepath: Path, year_stats: Dict[str, Any], monthly_
             break
         data_end = nl + 1
 
+    # 计算有支出的月份数，用于月均
+    months_with_data = sum(1 for m in monthly_stats.values() if m.get('record_count', 0) > 0) or 1
+    monthly_avg = te / months_with_data
+
     new_data = (
         f"| 年度总支出 | ￥{te:,.2f} |\n"
         f"| 年度总收入 | ￥{ti:,.2f} |\n"
         f"| 年度净结余 | ￥{nb:,.2f} |\n"
-        f"| 月均支出 | ￥{te/12:,.2f} |\n"
+        f"| 月均支出 | ￥{monthly_avg:,.2f} |\n"
     )
     raw = raw[:data_start] + new_data + raw[data_end:]
 
