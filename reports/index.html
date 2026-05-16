@@ -24,13 +24,13 @@
     <div class="container">
         <div class="header">
             <h1>📊 财务账本可视化报表</h1>
-            <p>2026-2026年度 | 生成时间: 2026-05-09 12:33</p>
+            <p>2026-2026年度 | 生成时间: 2026-05-16 14:34</p>
         </div>
         
         <div class="stats-grid">
             <div class="stat-card">
                 <h3>年度总支出</h3>
-                <div class="value expense">￥18,814.27</div>
+                <div class="value expense">￥19,552.27</div>
             </div>
             <div class="stat-card">
                 <h3>年度总收入</h3>
@@ -38,11 +38,11 @@
             </div>
             <div class="stat-card">
                 <h3>净结余</h3>
-                <div class="value balance">￥-9,814.27</div>
+                <div class="value balance">￥-10,552.27</div>
             </div>
             <div class="stat-card">
                 <h3>记录总数</h3>
-                <div class="value">302</div>
+                <div class="value">328</div>
             </div>
         </div>
         
@@ -59,7 +59,7 @@
     
     <script>
         // 月度趋势图
-        const monthlyData = {"2026-01": {"expense": 3100.0, "income": 4000.0}, "2026-02": {"expense": 2874.0, "income": 2500.0}, "2026-03": {"expense": 6028.0, "income": 2500.0}, "2026-04": {"expense": 5517.27, "income": 0}, "2026-05": {"expense": 1295.0, "income": 0}};
+        const monthlyData = {"2026-01": {"expense": 3100.0, "income": 4000.0}, "2026-02": {"expense": 2874.0, "income": 2500.0}, "2026-03": {"expense": 6028.0, "income": 2500.0}, "2026-04": {"expense": 5517.27, "income": 0}, "2026-05": {"expense": 2033.0, "income": 0}};
         const months = Object.keys(monthlyData).sort();
         
         Plotly.newPlot('monthly-chart', [
@@ -85,7 +85,7 @@
         });
         
         // 分类饼图
-        const categoryData = {"生存基线": 12775.0, "杠杆与生产力": 956.27, "弹性消耗": 3556.0, "资产与储备": 200.0, "精力与健康维护": 1327.0};
+        const categoryData = {"生存基线": 13401.0, "杠杆与生产力": 956.27, "弹性消耗": 3668.0, "资产与储备": 200.0, "精力与健康维护": 1327.0};
         
         Plotly.newPlot('category-chart', [{
             values: Object.values(categoryData),
