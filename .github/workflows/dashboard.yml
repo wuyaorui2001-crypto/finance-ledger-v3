@@ -5,6 +5,8 @@ on:
     branches: [ main, master ]
     paths:
       - '**.md'
+      - 'scripts/visualize.py'
+      - 'reports/**'
   schedule:
     - cron: '0 2 * * *'  # 每天凌晨2点自动运行
   workflow_dispatch:  # 允许手动触发

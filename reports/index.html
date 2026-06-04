@@ -1,103 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>财务账本可视化 - 2026-2026</title>
-    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 20px; background: #f5f5f5; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 10px; margin-bottom: 20px; }
-        .header h1 { margin: 0; font-size: 28px; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px; }
-        .stat-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .stat-card h3 { margin: 0 0 10px 0; color: #666; font-size: 14px; }
-        .stat-card .value { font-size: 32px; font-weight: bold; color: #333; }
-        .stat-card .expense { color: #e74c3c; }
-        .stat-card .income { color: #27ae60; }
-        .stat-card .balance { color: #e74c3c; }
-        .chart-container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .chart-title { margin: 0 0 20px 0; font-size: 18px; color: #333; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冰美式财务账本</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/dashboard.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📊 财务账本可视化报表</h1>
-            <p>2026-2026年度 | 生成时间: 2026-05-21 15:49</p>
-        </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>年度总支出</h3>
-                <div class="value expense">￥20,834.27</div>
+    <div class="grain"></div>
+    <div class="page">
+        <header class="header">
+            <div class="header-main">
+                <p class="eyebrow">Personal Finance Ledger</p>
+                <h1 class="title">冰美式财务账本</h1>
+                <p class="updated" id="updated-at">加载中…</p>
             </div>
-            <div class="stat-card">
-                <h3>年度总收入</h3>
-                <div class="value income">￥9,000.00</div>
+            <nav class="year-switcher" id="year-switcher" aria-label="切换年份"></nav>
+        </header>
+
+        <section class="kpi-section" aria-label="支出概览">
+            <article class="kpi-card" style="--delay: 0">
+                <span class="kpi-label">总支出</span>
+                <span class="kpi-value" id="kpi-total">—</span>
+            </article>
+            <article class="kpi-card" style="--delay: 1">
+                <span class="kpi-label">月均支出</span>
+                <span class="kpi-value" id="kpi-monthly">—</span>
+            </article>
+            <article class="kpi-card" style="--delay: 2">
+                <span class="kpi-label">日均支出</span>
+                <span class="kpi-value" id="kpi-daily">—</span>
+            </article>
+        </section>
+
+        <section class="panel" aria-label="每月支出">
+            <div class="panel-head">
+                <h2 class="panel-title">每月支出</h2>
+                <p class="panel-sub" id="monthly-sub"></p>
             </div>
-            <div class="stat-card">
-                <h3>净结余</h3>
-                <div class="value balance">￥-11,834.27</div>
+            <div class="monthly-chart" id="monthly-chart"></div>
+            <table class="data-table" id="monthly-table">
+                <thead>
+                    <tr><th>月份</th><th>支出</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <section class="panel" aria-label="类目结构">
+            <div class="panel-head">
+                <h2 class="panel-title">类目结构</h2>
+                <p class="panel-sub">按支出金额排序</p>
             </div>
-            <div class="stat-card">
-                <h3>记录总数</h3>
-                <div class="value">349</div>
-            </div>
-        </div>
-        
-        <div class="chart-container">
-            <h2 class="chart-title">📈 月度收支趋势</h2>
-            <div id="monthly-chart"></div>
-        </div>
-        
-        <div class="chart-container">
-            <h2 class="chart-title">🥧 支出分类占比</h2>
-            <div id="category-chart"></div>
-        </div>
+            <div class="category-bars" id="category-bars"></div>
+            <table class="data-table" id="category-table">
+                <thead>
+                    <tr><th>类目</th><th>金额</th><th>占比</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <footer class="footnote" id="footnote"></footer>
     </div>
-    
-    <script>
-        // 月度趋势图
-        const monthlyData = {"2026-01": {"expense": 3100.0, "income": 4000.0}, "2026-02": {"expense": 2874.0, "income": 2500.0}, "2026-03": {"expense": 6028.0, "income": 2500.0}, "2026-04": {"expense": 5517.27, "income": 0}, "2026-05": {"expense": 3315.0, "income": 0}};
-        const months = Object.keys(monthlyData).sort();
-        
-        Plotly.newPlot('monthly-chart', [
-            {
-                x: months,
-                y: months.map(m => monthlyData[m].expense),
-                type: 'bar',
-                name: '支出',
-                marker: { color: '#e74c3c' }
-            },
-            {
-                x: months,
-                y: months.map(m => monthlyData[m].income),
-                type: 'bar',
-                name: '收入',
-                marker: { color: '#27ae60' }
-            }
-        ], {
-            barmode: 'group',
-            xaxis: { title: '月份' },
-            yaxis: { title: '金额 (￥)' },
-            hovermode: 'x unified'
-        });
-        
-        // 分类饼图
-        const categoryData = {"生存基线": 13869.0, "杠杆与生产力": 1096.27, "弹性消耗": 3732.0, "资产与储备": 200.0, "精力与健康维护": 1937.0};
-        
-        Plotly.newPlot('category-chart', [{
-            values: Object.values(categoryData),
-            labels: Object.keys(categoryData),
-            type: 'pie',
-            hole: 0.4,
-            textinfo: 'label+percent',
-            textposition: 'outside'
-        }], {
-            showlegend: true,
-            legend: { orientation: 'h', y: -0.1 }
-        });
-    </script>
+
+    <div class="empty-state hidden" id="empty-state">
+        <p>该年度暂无记账数据</p>
+    </div>
+
+    <script src="./assets/dashboard.js"></script>
 </body>
 </html>

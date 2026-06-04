@@ -1,0 +1,204 @@
+{
+  "generated_at": "2026-06-04T13:17:38",
+  "default_year": 2026,
+  "years": {
+    "2026": {
+      "total_expense": 23323.27,
+      "monthly_avg": 3887.21,
+      "daily_avg": 150.47,
+      "months": [
+        {
+          "month": "01",
+          "label": "1月",
+          "expense": 3100.0,
+          "has_data": true
+        },
+        {
+          "month": "02",
+          "label": "2月",
+          "expense": 2874.0,
+          "has_data": true
+        },
+        {
+          "month": "03",
+          "label": "3月",
+          "expense": 6028.0,
+          "has_data": true
+        },
+        {
+          "month": "04",
+          "label": "4月",
+          "expense": 5517.27,
+          "has_data": true
+        },
+        {
+          "month": "05",
+          "label": "5月",
+          "expense": 4655.0,
+          "has_data": true
+        },
+        {
+          "month": "06",
+          "label": "6月",
+          "expense": 1149.0,
+          "has_data": true
+        },
+        {
+          "month": "07",
+          "label": "7月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "08",
+          "label": "8月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "09",
+          "label": "9月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "10",
+          "label": "10月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "11",
+          "label": "11月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "12",
+          "label": "12月",
+          "expense": 0,
+          "has_data": false
+        }
+      ],
+      "categories": [
+        {
+          "name": "生存基线",
+          "amount": 15305.0,
+          "percent": 65.6
+        },
+        {
+          "name": "弹性消耗",
+          "amount": 3935.0,
+          "percent": 16.9
+        },
+        {
+          "name": "精力与健康维护",
+          "amount": 2787.0,
+          "percent": 11.9
+        },
+        {
+          "name": "杠杆与生产力",
+          "amount": 1096.27,
+          "percent": 4.7
+        },
+        {
+          "name": "资产与储备",
+          "amount": 200.0,
+          "percent": 0.9
+        }
+      ],
+      "meta": {
+        "months_with_data": 6,
+        "days_in_period": 155,
+        "last_record_date": "2026-06-04",
+        "record_count": 392
+      }
+    },
+    "2027": {
+      "total_expense": 0,
+      "monthly_avg": 0.0,
+      "daily_avg": 0.0,
+      "months": [
+        {
+          "month": "01",
+          "label": "1月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "02",
+          "label": "2月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "03",
+          "label": "3月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "04",
+          "label": "4月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "05",
+          "label": "5月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "06",
+          "label": "6月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "07",
+          "label": "7月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "08",
+          "label": "8月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "09",
+          "label": "9月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "10",
+          "label": "10月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "11",
+          "label": "11月",
+          "expense": 0,
+          "has_data": false
+        },
+        {
+          "month": "12",
+          "label": "12月",
+          "expense": 0,
+          "has_data": false
+        }
+      ],
+      "categories": [],
+      "meta": {
+        "months_with_data": 0,
+        "days_in_period": 1,
+        "last_record_date": null,
+        "record_count": 0
+      }
+    }
+  }
+}
