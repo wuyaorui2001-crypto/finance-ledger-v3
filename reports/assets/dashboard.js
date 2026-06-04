@@ -33,6 +33,11 @@
     history.replaceState(null, "", "#" + year);
   }
 
+  function setEmptyView(isEmpty) {
+    document.getElementById("page-data").classList.toggle("hidden", isEmpty);
+    document.getElementById("empty-inline").classList.toggle("hidden", !isEmpty);
+  }
+
   function renderYearSwitcher(years, activeYear) {
     const nav = document.getElementById("year-switcher");
     nav.innerHTML = "";
@@ -139,7 +144,7 @@
 
   function renderYear(year) {
     if (!dashboardData || !dashboardData.years[year]) {
-      document.getElementById("empty-state").classList.remove("hidden");
+      setEmptyView(true);
       return;
     }
 
@@ -152,27 +157,20 @@
     document.title = "冰美式财务账本 · " + year;
     document.getElementById("updated-at").textContent =
       "数据更新于 " + formatDate(dashboardData.generated_at);
+    document.getElementById("empty-year-label").textContent = year;
 
     renderYearSwitcher(dashboardData.years, year);
 
     if (isEmpty) {
-      document.getElementById("empty-state").classList.remove("hidden");
-      document.querySelector(".page").classList.add("hidden");
+      setEmptyView(true);
       return;
     }
 
-    document.getElementById("empty-state").classList.add("hidden");
-    document.querySelector(".page").classList.remove("hidden");
-
-    renderYearSwitcher(dashboardData.years, year);
+    setEmptyView(false);
     renderKPIs(data);
     renderMonthly(data);
     renderCategories(data);
     renderFootnote(data);
-
-    document.querySelectorAll(".year-btn").forEach(function (btn) {
-      btn.classList.toggle("active", btn.dataset.year === year);
-    });
   }
 
   function init() {

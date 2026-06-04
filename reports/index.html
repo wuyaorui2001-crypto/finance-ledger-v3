@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>冰美式财务账本</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/dashboard.css">
 </head>
 <body>
@@ -21,6 +18,11 @@
             <nav class="year-switcher" id="year-switcher" aria-label="切换年份"></nav>
         </header>
 
+        <div class="empty-inline hidden" id="empty-inline">
+            <p><strong id="empty-year-label">—</strong> 年度暂无记账数据</p>
+        </div>
+
+        <div id="page-data">
         <section class="kpi-section" aria-label="支出概览">
             <article class="kpi-card" style="--delay: 0">
                 <span class="kpi-label">总支出</span>
@@ -65,10 +67,7 @@
         </section>
 
         <footer class="footnote" id="footnote"></footer>
-    </div>
-
-    <div class="empty-state hidden" id="empty-state">
-        <p>该年度暂无记账数据</p>
+        </div>
     </div>
 
     <script src="./assets/dashboard.js"></script>

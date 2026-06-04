@@ -9,8 +9,8 @@
   --muted: #8a7b6a;
   --border: rgba(245, 235, 224, 0.08);
   --bar-empty: rgba(245, 235, 224, 0.06);
-  --font-display: "Fraunces", Georgia, serif;
-  --font-body: "IBM Plex Sans", sans-serif;
+  --font-display: "PingFang SC", "PingFang TC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-body: "PingFang SC", "PingFang TC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --radius: 12px;
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
 }
@@ -74,8 +74,8 @@ body {
 
 .title {
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 5vw, 2.5rem);
-  font-weight: 700;
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  font-weight: 600;
   line-height: 1.15;
   color: var(--crema);
 }
@@ -149,9 +149,9 @@ body {
 
 .kpi-value {
   display: block;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: clamp(1.4rem, 4vw, 1.85rem);
-  font-weight: 700;
+  font-weight: 600;
   color: var(--amber);
   font-variant-numeric: tabular-nums;
 }
@@ -171,8 +171,8 @@ body {
 }
 
 .panel-title {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-family: var(--font-body);
+  font-size: 1.15rem;
   font-weight: 600;
   color: var(--crema);
 }
@@ -336,17 +336,21 @@ body {
   padding-top: 0.5rem;
 }
 
-/* Empty state */
-.empty-state {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(26, 18, 9, 0.92);
-  z-index: 100;
-  font-size: 1rem;
+/* Empty year (inline, header stays visible) */
+.empty-inline {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 3rem 1.5rem;
+  text-align: center;
   color: var(--crema-dim);
+  font-size: 0.95rem;
+  box-shadow: var(--shadow);
+}
+
+.empty-inline strong {
+  color: var(--crema);
+  font-weight: 600;
 }
 
 .hidden {
