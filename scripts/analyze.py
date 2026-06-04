@@ -5,38 +5,23 @@
 用于生成跨年度统计和趋势分析
 """
 
-import re
-import json
 from pathlib import Path
 from collections import defaultdict
 import sys
 
 PROJECT_DIR = Path(__file__).parent.parent
+sys.path.insert(0, str(Path(__file__).parent))
+from parser import parse_year_file as _parse_year_file
+
 
 def parse_year_file(filepath):
-    """解析年度账本文件"""
+    """解析年度账本文件（复用 parser.py，与 validate/recalc 一致）"""
     if not filepath.exists():
         return []
-    
-    records = []
-    content = filepath.read_text(encoding='utf-8')
-    
-    # 匹配记录
-    pattern = r'- (\d{4}-\d{2}-\d{2}) \| (\w+) \| \[(.+?)\] \| #(.+?) \| ￥([\d,\.]+) \| (.+)'
-    
-    for match in re.finditer(pattern, content):
-        date_str, type_, category, tag, amount_str, desc = match.groups()
-        records.append({
-            'date': date_str,
-            'year': date_str[:4],
-            'month': date_str[5:7],
-            'type': type_,
-            'category': category,
-            'tag': tag,
-            'amount': float(amount_str.replace(',', '')),
-            'desc': desc.strip()
-        })
-    
+    records = _parse_year_file(filepath)
+    for r in records:
+        r.setdefault('year', r['date'][:4])
+        r.setdefault('month', r['date'][5:7])
     return records
 
 def analyze_all_years():
