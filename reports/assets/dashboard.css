@@ -156,6 +156,14 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+.kpi-value.kpi-income {
+  color: var(--crema);
+}
+
+.kpi-value.kpi-negative {
+  color: #e07a5f;
+}
+
 /* Panels */
 .panel {
   background: var(--bg-card);
@@ -202,21 +210,38 @@ body {
   min-width: 0;
 }
 
-.month-bar-wrap {
-  width: 100%;
+.month-bar-group {
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
   height: 140px;
+  width: 100%;
+  justify-content: center;
+}
+
+.month-bar-wrap {
+  flex: 1;
+  max-width: 14px;
+  height: 100%;
   display: flex;
   align-items: flex-end;
   justify-content: center;
 }
 
 .month-bar {
-  width: 70%;
-  max-width: 36px;
+  width: 100%;
   border-radius: 4px 4px 0 0;
   background: var(--amber);
   transition: height 0.5s ease;
   min-height: 2px;
+}
+
+.month-bar-income {
+  background: var(--crema-dim);
+}
+
+.month-bar-expense {
+  background: var(--amber);
 }
 
 .month-bar.empty {
@@ -326,6 +351,14 @@ body {
 .amount-cell {
   color: var(--amber);
   font-weight: 500;
+}
+
+.amount-cell.amount-income {
+  color: var(--crema);
+}
+
+.amount-cell.amount-negative {
+  color: #e07a5f;
 }
 
 /* Footnote */

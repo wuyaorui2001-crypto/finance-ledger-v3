@@ -1,82 +1,123 @@
 {
-  "generated_at": "2026-06-05T13:19:24",
+  "generated_at": "2026-06-05T13:29:46",
   "default_year": 2026,
   "years": {
     "2026": {
       "total_expense": 23416.27,
+      "total_income": 18600.0,
+      "net_balance": -4816.27,
+      "expense_ratio": 125.9,
+      "monthly_avg_expense": 3902.71,
+      "monthly_avg_income": 3100.0,
       "monthly_avg": 3902.71,
       "daily_avg": 150.1,
       "months": [
         {
           "month": "01",
           "label": "1月",
+          "income": 3100.0,
           "expense": 3100.0,
+          "balance": 0.0,
+          "expense_ratio": 100.0,
           "has_data": true
         },
         {
           "month": "02",
           "label": "2月",
+          "income": 3100.0,
           "expense": 2874.0,
+          "balance": 226.0,
+          "expense_ratio": 92.7,
           "has_data": true
         },
         {
           "month": "03",
           "label": "3月",
+          "income": 3100.0,
           "expense": 6028.0,
+          "balance": -2928.0,
+          "expense_ratio": 194.5,
           "has_data": true
         },
         {
           "month": "04",
           "label": "4月",
+          "income": 3100.0,
           "expense": 5517.27,
+          "balance": -2417.27,
+          "expense_ratio": 178.0,
           "has_data": true
         },
         {
           "month": "05",
           "label": "5月",
+          "income": 3100.0,
           "expense": 4655.0,
+          "balance": -1555.0,
+          "expense_ratio": 150.2,
           "has_data": true
         },
         {
           "month": "06",
           "label": "6月",
+          "income": 3100.0,
           "expense": 1242.0,
+          "balance": 1858.0,
+          "expense_ratio": 40.1,
           "has_data": true
         },
         {
           "month": "07",
           "label": "7月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "08",
           "label": "8月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "09",
           "label": "9月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "10",
           "label": "10月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "11",
           "label": "11月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "12",
           "label": "12月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         }
       ],
@@ -109,92 +150,135 @@
       ],
       "meta": {
         "months_with_data": 6,
+        "months_with_income": 6,
         "days_in_period": 156,
         "last_record_date": "2026-06-05",
-        "record_count": 396
+        "record_count": 399
       }
     },
     "2027": {
       "total_expense": 0,
+      "total_income": 0,
+      "net_balance": 0,
+      "expense_ratio": 0.0,
+      "monthly_avg_expense": 0.0,
+      "monthly_avg_income": 0.0,
       "monthly_avg": 0.0,
       "daily_avg": 0.0,
       "months": [
         {
           "month": "01",
           "label": "1月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "02",
           "label": "2月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "03",
           "label": "3月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "04",
           "label": "4月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "05",
           "label": "5月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "06",
           "label": "6月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "07",
           "label": "7月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "08",
           "label": "8月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "09",
           "label": "9月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "10",
           "label": "10月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "11",
           "label": "11月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         },
         {
           "month": "12",
           "label": "12月",
+          "income": 0,
           "expense": 0,
+          "balance": 0,
+          "expense_ratio": null,
           "has_data": false
         }
       ],
       "categories": [],
       "meta": {
         "months_with_data": 0,
+        "months_with_income": 0,
         "days_in_period": 1,
         "last_record_date": null,
         "record_count": 0

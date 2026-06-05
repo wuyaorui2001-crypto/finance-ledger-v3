@@ -55,12 +55,17 @@ def calculate_monthly_stats(records: List[Dict[str, Any]], year: int, month: str
         survival_amount = category_breakdown.get('生存基线', 0)
         survival_ratio = survival_amount / total_expense * 100
 
+    expense_ratio = 0.0
+    if total_income > 0:
+        expense_ratio = total_expense / total_income * 100
+
     return {
         'month': month,
         'record_count': len(month_records),
         'total_expense': total_expense,
         'total_income': total_income,
         'net_balance': total_income - total_expense,
+        'expense_ratio': expense_ratio,
         'category_breakdown': category_breakdown,
         'survival_ratio': survival_ratio,
         'expense_count': len(expenses),
@@ -101,12 +106,17 @@ def calculate_year_stats(records: List[Dict[str, Any]], year: int) -> Dict[str, 
         survival_amount = category_breakdown.get('生存基线', 0)
         survival_ratio = survival_amount / total_expense * 100
 
+    expense_ratio = 0.0
+    if total_income > 0:
+        expense_ratio = total_expense / total_income * 100
+
     return {
         'year': year,
         'record_count': len(year_records),
         'total_expense': total_expense,
         'total_income': total_income,
         'net_balance': total_income - total_expense,
+        'expense_ratio': expense_ratio,
         'category_breakdown': category_breakdown,
         'survival_ratio': survival_ratio,
         'expense_count': len(expenses),
@@ -135,6 +145,7 @@ def format_stats_output(stats: Dict[str, Any], stats_type: str = 'monthly') -> s
         output.append(f"  总支出: ￥{stats['total_expense']:,.2f}")
         output.append(f"  总收入: ￥{stats['total_income']:,.2f}")
         output.append(f"  净结余: ￥{stats['net_balance']:,.2f}")
+        output.append(f"  支出占收入: {stats.get('expense_ratio', 0):.1f}%")
         if stats['category_breakdown']:
             output.append(f"  支出分类:")
             for cat, amount in sorted(stats['category_breakdown'].items(), key=lambda x: x[1], reverse=True):
@@ -149,6 +160,7 @@ def format_stats_output(stats: Dict[str, Any], stats_type: str = 'monthly') -> s
         output.append(f"  年度总支出: ￥{stats['total_expense']:,.2f}")
         output.append(f"  年度总收入: ￥{stats['total_income']:,.2f}")
         output.append(f"  年度净结余: ￥{stats['net_balance']:,.2f}")
+        output.append(f"  支出占收入: {stats.get('expense_ratio', 0):.1f}%")
         if stats['category_breakdown']:
             output.append(f"  支出分类结构:")
             for cat, amount in sorted(stats['category_breakdown'].items(), key=lambda x: x[1], reverse=True):
@@ -199,25 +211,30 @@ def update_file_stats_panel(filepath: Path, year_stats: Dict[str, Any], monthly_
         print("[ERROR] 未找到年度表格分隔符")
         return False
 
-    # 分隔符行之后是数据行，找到数据行开始
+    # 分隔符行之后是数据行，替换至下一个非表格行
     data_start = raw.find("\n", sep_line_pos) + 1
-    # 跳过4行数据：年度总支出/总收入/净结余/月均支出
     data_end = data_start
-    for _ in range(4):
-        nl = raw.find("\n", data_end)
-        if nl == -1:
-            break
-        data_end = nl + 1
+    while data_end < len(raw):
+        line_end = raw.find("\n", data_end)
+        if line_end == -1:
+            line_end = len(raw)
+        line = raw[data_end:line_end]
+        if line.startswith("|") and "|" in line[1:]:
+            data_end = line_end + 1
+            continue
+        break
 
     # 计算有支出的月份数，用于月均
     months_with_data = sum(1 for m in monthly_stats.values() if m.get('record_count', 0) > 0) or 1
     monthly_avg = te / months_with_data
+    year_expense_ratio = (te / ti * 100) if ti > 0 else 0.0
 
     new_data = (
         f"| 年度总支出 | ￥{te:,.2f} |\n"
         f"| 年度总收入 | ￥{ti:,.2f} |\n"
         f"| 年度净结余 | ￥{nb:,.2f} |\n"
         f"| 月均支出 | ￥{monthly_avg:,.2f} |\n"
+        f"| 支出占收入 | {year_expense_ratio:.1f}% |\n"
     )
     raw = raw[:data_start] + new_data + raw[data_end:]
 
@@ -268,11 +285,11 @@ def update_file_stats_panel(filepath: Path, year_stats: Dict[str, Any], monthly_
             continue
         sep_pos += 1  # past newline
 
-        # 收集6行面板（| 指标 | 数值 | + |------|------| + 4个数据行）
+        # 收集7行面板（| 指标 | 数值 | + |------|------| + 5个数据行）
         pos = sep_pos
         rows_collected = 0
         table_end = sep_pos
-        while rows_collected < 6 and pos < len(raw):
+        while rows_collected < 7 and pos < len(raw):
             next_nl = raw.find("\n", pos)
             if next_nl == -1:
                 break
@@ -283,6 +300,7 @@ def update_file_stats_panel(filepath: Path, year_stats: Dict[str, Any], monthly_
         m_te = m_stats['total_expense']
         m_ti = m_stats['total_income']
         m_nb = m_stats['net_balance']
+        m_er = m_stats.get('expense_ratio', 0)
         m_sr = m_stats['survival_ratio']
         new_panel = (
             "| 指标 | 数值 |\n"
@@ -290,6 +308,7 @@ def update_file_stats_panel(filepath: Path, year_stats: Dict[str, Any], monthly_
             f"| 总支出 | ￥{m_te:,.2f} |\n"
             f"| 总收入 | ￥{m_ti:,.2f} |\n"
             f"| 净结余 | ￥{m_nb:,.2f} |\n"
+            f"| 支出占收入 | {m_er:.1f}% |\n"
             f"| 生存基线占比 | {m_sr:.1f}% |\n"
         )
         raw = raw[:sep_pos] + new_panel + raw[table_end:]

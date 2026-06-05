@@ -67,10 +67,17 @@ def compute_year_dashboard_stats(records: List[Dict[str, Any]], year: int) -> Di
     last_record_date = max(expense_dates) if expense_dates else None
 
     total_expense = year_stats["total_expense"]
+    total_income = year_stats["total_income"]
+    net_balance = year_stats["net_balance"]
+    expense_ratio = year_stats.get("expense_ratio", 0.0)
     months_with_data = sum(
         1 for m in monthly_stats.values() if m.get("record_count", 0) > 0
     )
-    monthly_avg = total_expense / (months_with_data or 1)
+    monthly_avg_expense = total_expense / (months_with_data or 1)
+    months_with_income = sum(
+        1 for m in monthly_stats.values() if m.get("total_income", 0) > 0
+    )
+    monthly_avg_income = total_income / (months_with_income or 1)
 
     days_in_period = _days_in_period(year, last_record_date)
     daily_avg = total_expense / days_in_period if total_expense > 0 else 0.0
@@ -78,10 +85,17 @@ def compute_year_dashboard_stats(records: List[Dict[str, Any]], year: int) -> Di
     months = []
     for m in [f"{i:02d}" for i in range(1, 13)]:
         ms = monthly_stats[m]
+        income = ms["total_income"]
+        expense = ms["total_expense"]
+        balance = ms["net_balance"]
+        ratio = ms.get("expense_ratio", 0.0)
         months.append({
             "month": m,
             "label": MONTH_LABELS[m],
-            "expense": round(ms["total_expense"], 2),
+            "income": round(income, 2),
+            "expense": round(expense, 2),
+            "balance": round(balance, 2),
+            "expense_ratio": round(ratio, 1) if income > 0 else None,
             "has_data": ms["record_count"] > 0,
         })
 
@@ -102,12 +116,18 @@ def compute_year_dashboard_stats(records: List[Dict[str, Any]], year: int) -> Di
 
     return {
         "total_expense": round(total_expense, 2),
-        "monthly_avg": round(monthly_avg, 2),
+        "total_income": round(total_income, 2),
+        "net_balance": round(net_balance, 2),
+        "expense_ratio": round(expense_ratio, 1),
+        "monthly_avg_expense": round(monthly_avg_expense, 2),
+        "monthly_avg_income": round(monthly_avg_income, 2),
+        "monthly_avg": round(monthly_avg_expense, 2),
         "daily_avg": round(daily_avg, 2),
         "months": months,
         "categories": categories,
         "meta": {
             "months_with_data": months_with_data,
+            "months_with_income": months_with_income,
             "days_in_period": days_in_period,
             "last_record_date": last_record_date,
             "record_count": year_stats["record_count"],
@@ -163,30 +183,42 @@ def generate_index_html() -> str:
         </div>
 
         <div id="page-data">
-        <section class="kpi-section" aria-label="支出概览">
+        <section class="kpi-section" aria-label="收支概览">
             <article class="kpi-card" style="--delay: 0">
                 <span class="kpi-label">总支出</span>
-                <span class="kpi-value" id="kpi-total">—</span>
+                <span class="kpi-value" id="kpi-total-expense">—</span>
             </article>
             <article class="kpi-card" style="--delay: 1">
-                <span class="kpi-label">月均支出</span>
-                <span class="kpi-value" id="kpi-monthly">—</span>
+                <span class="kpi-label">总收入</span>
+                <span class="kpi-value kpi-income" id="kpi-total-income">—</span>
             </article>
             <article class="kpi-card" style="--delay: 2">
-                <span class="kpi-label">日均支出</span>
-                <span class="kpi-value" id="kpi-daily">—</span>
+                <span class="kpi-label">净结余</span>
+                <span class="kpi-value" id="kpi-net-balance">—</span>
+            </article>
+            <article class="kpi-card" style="--delay: 3">
+                <span class="kpi-label">支出占收入</span>
+                <span class="kpi-value" id="kpi-expense-ratio">—</span>
+            </article>
+            <article class="kpi-card" style="--delay: 4">
+                <span class="kpi-label">月均支出</span>
+                <span class="kpi-value" id="kpi-monthly-expense">—</span>
+            </article>
+            <article class="kpi-card" style="--delay: 5">
+                <span class="kpi-label">月均收入</span>
+                <span class="kpi-value kpi-income" id="kpi-monthly-income">—</span>
             </article>
         </section>
 
-        <section class="panel" aria-label="每月支出">
+        <section class="panel" aria-label="每月收支">
             <div class="panel-head">
-                <h2 class="panel-title">每月支出</h2>
+                <h2 class="panel-title">每月收支</h2>
                 <p class="panel-sub" id="monthly-sub"></p>
             </div>
             <div class="monthly-chart" id="monthly-chart"></div>
             <table class="data-table" id="monthly-table">
                 <thead>
-                    <tr><th>月份</th><th>支出</th></tr>
+                    <tr><th>月份</th><th>收入</th><th>支出</th><th>结余</th><th>支出占比</th></tr>
                 </thead>
                 <tbody></tbody>
             </table>

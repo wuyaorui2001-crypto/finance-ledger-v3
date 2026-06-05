@@ -23,30 +23,42 @@
         </div>
 
         <div id="page-data">
-        <section class="kpi-section" aria-label="支出概览">
+        <section class="kpi-section" aria-label="收支概览">
             <article class="kpi-card" style="--delay: 0">
                 <span class="kpi-label">总支出</span>
-                <span class="kpi-value" id="kpi-total">—</span>
+                <span class="kpi-value" id="kpi-total-expense">—</span>
             </article>
             <article class="kpi-card" style="--delay: 1">
-                <span class="kpi-label">月均支出</span>
-                <span class="kpi-value" id="kpi-monthly">—</span>
+                <span class="kpi-label">总收入</span>
+                <span class="kpi-value kpi-income" id="kpi-total-income">—</span>
             </article>
             <article class="kpi-card" style="--delay: 2">
-                <span class="kpi-label">日均支出</span>
-                <span class="kpi-value" id="kpi-daily">—</span>
+                <span class="kpi-label">净结余</span>
+                <span class="kpi-value" id="kpi-net-balance">—</span>
+            </article>
+            <article class="kpi-card" style="--delay: 3">
+                <span class="kpi-label">支出占收入</span>
+                <span class="kpi-value" id="kpi-expense-ratio">—</span>
+            </article>
+            <article class="kpi-card" style="--delay: 4">
+                <span class="kpi-label">月均支出</span>
+                <span class="kpi-value" id="kpi-monthly-expense">—</span>
+            </article>
+            <article class="kpi-card" style="--delay: 5">
+                <span class="kpi-label">月均收入</span>
+                <span class="kpi-value kpi-income" id="kpi-monthly-income">—</span>
             </article>
         </section>
 
-        <section class="panel" aria-label="每月支出">
+        <section class="panel" aria-label="每月收支">
             <div class="panel-head">
-                <h2 class="panel-title">每月支出</h2>
+                <h2 class="panel-title">每月收支</h2>
                 <p class="panel-sub" id="monthly-sub"></p>
             </div>
             <div class="monthly-chart" id="monthly-chart"></div>
             <table class="data-table" id="monthly-table">
                 <thead>
-                    <tr><th>月份</th><th>支出</th></tr>
+                    <tr><th>月份</th><th>收入</th><th>支出</th><th>结余</th><th>支出占比</th></tr>
                 </thead>
                 <tbody></tbody>
             </table>

@@ -11,6 +11,11 @@
     });
   }
 
+  function formatPct(n) {
+    if (n == null || isNaN(n)) return "—";
+    return n.toFixed(1) + "%";
+  }
+
   function formatDate(iso) {
     if (!iso) return "";
     const d = new Date(iso);
@@ -63,9 +68,16 @@
   }
 
   function renderKPIs(data) {
-    document.getElementById("kpi-total").textContent = formatMoney(data.total_expense);
-    document.getElementById("kpi-monthly").textContent = formatMoney(data.monthly_avg);
-    document.getElementById("kpi-daily").textContent = formatMoney(data.daily_avg);
+    document.getElementById("kpi-total-expense").textContent = formatMoney(data.total_expense);
+    document.getElementById("kpi-total-income").textContent = formatMoney(data.total_income || 0);
+    const nb = document.getElementById("kpi-net-balance");
+    nb.textContent = formatMoney(data.net_balance || 0);
+    nb.classList.toggle("kpi-negative", (data.net_balance || 0) < 0);
+    document.getElementById("kpi-expense-ratio").textContent = formatPct(data.expense_ratio);
+    document.getElementById("kpi-monthly-expense").textContent = formatMoney(
+      data.monthly_avg_expense != null ? data.monthly_avg_expense : data.monthly_avg
+    );
+    document.getElementById("kpi-monthly-income").textContent = formatMoney(data.monthly_avg_income || 0);
   }
 
   function renderMonthly(data) {
@@ -74,30 +86,45 @@
     chart.innerHTML = "";
     tbody.innerHTML = "";
 
-    const maxExpense = Math.max.apply(
+    const maxVal = Math.max.apply(
       null,
-      data.months.map(function (m) { return m.expense; }).concat([1])
+      data.months.flatMap(function (m) { return [m.income || 0, m.expense || 0]; }).concat([1])
     );
 
     document.getElementById("monthly-sub").textContent =
       currentYear + " 年 · 共 " + data.meta.months_with_data + " 个月有记录";
 
     data.months.forEach(function (m) {
-      const pct = maxExpense > 0 ? (m.expense / maxExpense) * 100 : 0;
+      if (!m.has_data && !m.income && !m.expense) return;
+
+      const incomePct = maxVal > 0 ? ((m.income || 0) / maxVal) * 100 : 0;
+      const expensePct = maxVal > 0 ? ((m.expense || 0) / maxVal) * 100 : 0;
+
       const col = document.createElement("div");
       col.className = "month-col";
       col.innerHTML =
-        '<div class="month-bar-wrap">' +
-          '<div class="month-bar' + (m.expense === 0 ? " empty" : "") + '" style="height:' + Math.max(pct, m.expense > 0 ? 3 : 1) + '%"></div>' +
-        "</div>" +
-        '<span class="month-amount">' + formatMoney(m.expense) + "</span>" +
+        '<div class="month-bar-group">' +
+          '<div class="month-bar-wrap">' +
+            '<div class="month-bar month-bar-income' + ((m.income || 0) === 0 ? " empty" : "") +
+              '" style="height:' + Math.max(incomePct, (m.income || 0) > 0 ? 3 : 1) + '%"></div>' +
+          '</div>' +
+          '<div class="month-bar-wrap">' +
+            '<div class="month-bar month-bar-expense' + ((m.expense || 0) === 0 ? " empty" : "") +
+              '" style="height:' + Math.max(expensePct, (m.expense || 0) > 0 ? 3 : 1) + '%"></div>' +
+          '</div>' +
+        '</div>' +
+        '<span class="month-amount">' + formatMoney(m.expense || 0) + "</span>" +
         '<span class="month-label">' + m.label + "</span>";
       chart.appendChild(col);
 
       const tr = document.createElement("tr");
+      const balClass = (m.balance || 0) < 0 ? " amount-negative" : "";
       tr.innerHTML =
         "<td>" + m.label + "</td>" +
-        '<td class="amount-cell">' + formatMoney(m.expense) + "</td>";
+        '<td class="amount-cell amount-income">' + formatMoney(m.income || 0) + "</td>" +
+        '<td class="amount-cell">' + formatMoney(m.expense || 0) + "</td>" +
+        '<td class="amount-cell' + balClass + '">' + formatMoney(m.balance || 0) + "</td>" +
+        "<td>" + formatPct(m.expense_ratio) + "</td>";
       tbody.appendChild(tr);
     });
   }
@@ -135,11 +162,9 @@
     const meta = data.meta;
     const el = document.getElementById("footnote");
     el.textContent =
-      "统计口径：" +
-      "月均 = 总支出 ÷ 有记账记录的月份数（" + meta.months_with_data + " 个月）； " +
-      "日均 = 总支出 ÷ 统计周期自然日数（" + meta.days_in_period + " 天，" +
-      currentYear + "-01-01 至 " +
-      (meta.last_record_date || "—") + "）。";
+      "统计口径：支出占比 = 支出 ÷ 收入 × 100%；月均支出 = 总支出 ÷ 有记录月份（" +
+      meta.months_with_data + " 个月）；月均收入 = 总收入 ÷ 有收入月份（" +
+      (meta.months_with_income || 0) + " 个月）。";
   }
 
   function renderYear(year) {
@@ -152,7 +177,7 @@
     setYearHash(year);
 
     const data = dashboardData.years[year];
-    const isEmpty = data.meta.record_count === 0 || data.total_expense === 0;
+    const isEmpty = data.meta.record_count === 0;
 
     document.title = "冰美式财务账本 · " + year;
     document.getElementById("updated-at").textContent =

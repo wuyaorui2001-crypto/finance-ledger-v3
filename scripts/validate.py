@@ -42,22 +42,50 @@ def validate_year_file(year: int) -> tuple[bool, list[str]]:
     record_count = 0
 
     with open(filepath, 'r', encoding='utf-8') as f:
-        for line in f:
-            line_num += 1
-            line = line.rstrip()
+        content = f.read()
 
-            # 跳过非记录行
-            if not line.startswith('- 20'):
-                continue
+    lines = content.splitlines()
+    current_section = None
+    line_num = 0
+    record_count = 0
 
-            record_count += 1
-            match = RECORD_PATTERN.match(line)
+    for line in lines:
+        line_num += 1
+        stripped = line.rstrip()
 
-            if not match:
-                errors.append(f"第{line_num}行: 格式错误 - {line[:50]}...")
-                continue
+        if stripped == '#### 当月收入':
+            current_section = 'income'
+            continue
+        if stripped in ('#### 当月支出明细', '#### 当月流水明细'):
+            current_section = 'expense'
+            continue
+        if stripped.startswith('### ') and stripped.endswith('月'):
+            current_section = None
+            continue
 
-            date, record_type, category, subtag, amount, original = match.groups()
+        if not stripped.startswith('- 20'):
+            continue
+
+        record_count += 1
+        match = RECORD_PATTERN.match(stripped)
+
+        if not match:
+            errors.append(f"第{line_num}行: 格式错误 - {stripped[:50]}...")
+            continue
+
+        date, record_type, category, subtag, amount, original = match.groups()
+
+        # 收入/支出分区警告
+        if record_type == '收入' and current_section == 'expense':
+            warnings.append(f"第{line_num}行: 收入记录出现在支出明细区块，应移至 #### 当月收入")
+        if record_type == '支出' and current_section == 'income':
+            warnings.append(f"第{line_num}行: 支出记录出现在收入区块，应移至 #### 当月支出明细")
+
+        # 工资日期警告（默认每月1日）
+        if record_type == '收入' and subtag == '#工资':
+            day = date.split('-')[2]
+            if day != '01':
+                warnings.append(f"第{line_num}行: #工资 收入日期为 {date}，建议记在该月 1 日")
 
             # 验证日期格式
             try:
