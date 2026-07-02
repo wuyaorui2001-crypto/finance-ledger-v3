@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-06-07T13:15:55",
+  "generated_at": "2026-07-02T23:15:42",
   "default_year": 2026,
   "years": {
     "2026": {
-      "total_expense": 23584.27,
-      "total_income": 18600.0,
-      "net_balance": -4984.27,
-      "expense_ratio": 126.8,
-      "monthly_avg_expense": 3930.71,
-      "monthly_avg_income": 3100.0,
-      "monthly_avg": 3930.71,
-      "daily_avg": 149.27,
+      "total_expense": 31540.27,
+      "total_income": 21400.0,
+      "net_balance": -10140.27,
+      "expense_ratio": 147.4,
+      "monthly_avg_expense": 4505.75,
+      "monthly_avg_income": 3566.67,
+      "monthly_avg": 4505.75,
+      "daily_avg": 172.35,
       "months": [
         {
           "month": "01",
@@ -60,20 +60,20 @@
         {
           "month": "06",
           "label": "6月",
-          "income": 3100.0,
-          "expense": 1410.0,
-          "balance": 1690.0,
-          "expense_ratio": 45.5,
+          "income": 5900.0,
+          "expense": 8766.0,
+          "balance": -2866.0,
+          "expense_ratio": 148.6,
           "has_data": true
         },
         {
           "month": "07",
           "label": "7月",
           "income": 0,
-          "expense": 0,
-          "balance": 0,
+          "expense": 600.0,
+          "balance": -600.0,
           "expense_ratio": null,
-          "has_data": false
+          "has_data": true
         },
         {
           "month": "08",
@@ -124,36 +124,36 @@
       "categories": [
         {
           "name": "生存基线",
-          "amount": 15476.0,
-          "percent": 65.6
+          "amount": 22892.0,
+          "percent": 72.6
         },
         {
           "name": "弹性消耗",
-          "amount": 4025.0,
-          "percent": 17.1
+          "amount": 4165.0,
+          "percent": 13.2
         },
         {
           "name": "精力与健康维护",
-          "amount": 2787.0,
-          "percent": 11.8
+          "amount": 3187.0,
+          "percent": 10.1
         },
         {
           "name": "杠杆与生产力",
           "amount": 1096.27,
-          "percent": 4.6
+          "percent": 3.5
         },
         {
           "name": "资产与储备",
           "amount": 200.0,
-          "percent": 0.8
+          "percent": 0.6
         }
       ],
       "meta": {
-        "months_with_data": 6,
+        "months_with_data": 7,
         "months_with_income": 6,
-        "days_in_period": 158,
-        "last_record_date": "2026-06-07",
-        "record_count": 405
+        "days_in_period": 183,
+        "last_record_date": "2026-07-02",
+        "record_count": 444
       }
     },
     "2027": {
