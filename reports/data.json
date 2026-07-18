@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T12:32:50",
+  "generated_at": "2026-07-18T12:36:16",
   "default_year": 2026,
   "years": {
     "2026": {
@@ -152,7 +152,7 @@
         "months_with_data": 7,
         "months_with_income": 6,
         "days_in_period": 199,
-        "last_record_date": "2026-07-19",
+        "last_record_date": "2026-07-18",
         "record_count": 472
       }
     },
