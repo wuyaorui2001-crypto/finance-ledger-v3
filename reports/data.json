@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-07-26T21:04:41",
+  "generated_at": "2026-08-02T18:03:32",
   "default_year": 2026,
   "years": {
     "2026": {
-      "total_expense": 61160.27,
+      "total_expense": 64217.27,
       "total_income": 21400.0,
-      "net_balance": -39760.27,
-      "expense_ratio": 285.8,
-      "monthly_avg_expense": 8737.18,
+      "net_balance": -42817.27,
+      "expense_ratio": 300.1,
+      "monthly_avg_expense": 8027.16,
       "monthly_avg_income": 3566.67,
-      "monthly_avg": 8737.18,
-      "daily_avg": 295.46,
+      "monthly_avg": 8027.16,
+      "daily_avg": 300.08,
       "months": [
         {
           "month": "01",
@@ -70,8 +70,8 @@
           "month": "07",
           "label": "7月",
           "income": 0,
-          "expense": 30220.0,
-          "balance": -30220.0,
+          "expense": 30977.0,
+          "balance": -30977.0,
           "expense_ratio": null,
           "has_data": true
         },
@@ -79,10 +79,10 @@
           "month": "08",
           "label": "8月",
           "income": 0,
-          "expense": 0,
-          "balance": 0,
+          "expense": 2300.0,
+          "balance": -2300.0,
           "expense_ratio": null,
-          "has_data": false
+          "has_data": true
         },
         {
           "month": "09",
@@ -124,23 +124,23 @@
       "categories": [
         {
           "name": "生存基线",
-          "amount": 50942.0,
-          "percent": 83.3
+          "amount": 51999.0,
+          "percent": 81.0
+        },
+        {
+          "name": "弹性消耗",
+          "amount": 6295.0,
+          "percent": 9.8
         },
         {
           "name": "精力与健康维护",
           "amount": 4627.0,
-          "percent": 7.6
-        },
-        {
-          "name": "弹性消耗",
-          "amount": 4295.0,
-          "percent": 7.0
+          "percent": 7.2
         },
         {
           "name": "杠杆与生产力",
           "amount": 1096.27,
-          "percent": 1.8
+          "percent": 1.7
         },
         {
           "name": "资产与储备",
@@ -149,11 +149,11 @@
         }
       ],
       "meta": {
-        "months_with_data": 7,
+        "months_with_data": 8,
         "months_with_income": 6,
-        "days_in_period": 207,
-        "last_record_date": "2026-07-26",
-        "record_count": 485
+        "days_in_period": 214,
+        "last_record_date": "2026-08-02",
+        "record_count": 494
       }
     },
     "2027": {
