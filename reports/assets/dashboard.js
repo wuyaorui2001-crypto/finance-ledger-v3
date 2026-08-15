@@ -79,9 +79,6 @@
     );
     document.getElementById("kpi-monthly-income").textContent = formatMoney(data.monthly_avg_income || 0);
     document.getElementById("kpi-daily-expense").textContent = formatMoney(data.daily_avg || 0);
-    const days = data.meta && data.meta.days_in_period;
-    const hint = document.getElementById("kpi-daily-hint");
-    hint.textContent = days ? "÷ " + days + " 天" : "";
   }
 
   function renderMonthly(data) {

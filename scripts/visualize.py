@@ -211,7 +211,6 @@ def generate_index_html() -> str:
             <article class="kpi-card" style="--delay: 6">
                 <span class="kpi-label">日均开销</span>
                 <span class="kpi-value" id="kpi-daily-expense">—</span>
-                <span class="kpi-hint" id="kpi-daily-hint"></span>
             </article>
         </section>
 
