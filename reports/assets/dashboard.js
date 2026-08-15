@@ -78,6 +78,10 @@
       data.monthly_avg_expense != null ? data.monthly_avg_expense : data.monthly_avg
     );
     document.getElementById("kpi-monthly-income").textContent = formatMoney(data.monthly_avg_income || 0);
+    document.getElementById("kpi-daily-expense").textContent = formatMoney(data.daily_avg || 0);
+    const days = data.meta && data.meta.days_in_period;
+    const hint = document.getElementById("kpi-daily-hint");
+    hint.textContent = days ? "÷ " + days + " 天" : "";
   }
 
   function renderMonthly(data) {
@@ -164,7 +168,8 @@
     el.textContent =
       "统计口径：支出占比 = 支出 ÷ 收入 × 100%；月均支出 = 总支出 ÷ 有记录月份（" +
       meta.months_with_data + " 个月）；月均收入 = 总收入 ÷ 有收入月份（" +
-      (meta.months_with_income || 0) + " 个月）。";
+      (meta.months_with_income || 0) + " 个月）；日均开销 = 总支出 ÷ 统计天数（当年 1/1 至 min(今天, 末条记录)，" +
+      (meta.days_in_period || 0) + " 天）。";
   }
 
   function renderYear(year) {

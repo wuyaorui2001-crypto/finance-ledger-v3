@@ -160,6 +160,13 @@ body {
   color: var(--crema);
 }
 
+.kpi-hint {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
 .kpi-value.kpi-negative {
   color: #e07a5f;
 }

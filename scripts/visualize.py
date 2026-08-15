@@ -208,6 +208,11 @@ def generate_index_html() -> str:
                 <span class="kpi-label">月均收入</span>
                 <span class="kpi-value kpi-income" id="kpi-monthly-income">—</span>
             </article>
+            <article class="kpi-card" style="--delay: 6">
+                <span class="kpi-label">日均开销</span>
+                <span class="kpi-value" id="kpi-daily-expense">—</span>
+                <span class="kpi-hint" id="kpi-daily-hint"></span>
+            </article>
         </section>
 
         <section class="panel" aria-label="每月收支">
