@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-08-15T12:49:47",
+  "generated_at": "2026-08-16T20:07:05",
   "default_year": 2026,
   "years": {
     "2026": {
-      "total_expense": 65940.27,
+      "total_expense": 66155.27,
       "total_income": 25400.0,
-      "net_balance": -40540.27,
-      "expense_ratio": 259.6,
-      "monthly_avg_expense": 8242.53,
+      "net_balance": -40755.27,
+      "expense_ratio": 260.5,
+      "monthly_avg_expense": 8269.41,
       "monthly_avg_income": 3628.57,
-      "monthly_avg": 8242.53,
-      "daily_avg": 290.49,
+      "monthly_avg": 8269.41,
+      "daily_avg": 290.15,
       "months": [
         {
           "month": "01",
@@ -79,8 +79,8 @@
           "month": "08",
           "label": "8月",
           "income": 0,
-          "expense": 4023.0,
-          "balance": -4023.0,
+          "expense": 4238.0,
+          "balance": -4238.0,
           "expense_ratio": null,
           "has_data": true
         },
@@ -125,12 +125,12 @@
         {
           "name": "生存基线",
           "amount": 53202.0,
-          "percent": 80.7
+          "percent": 80.4
         },
         {
           "name": "弹性消耗",
-          "amount": 6815.0,
-          "percent": 10.3
+          "amount": 7030.0,
+          "percent": 10.6
         },
         {
           "name": "精力与健康维护",
@@ -151,9 +151,9 @@
       "meta": {
         "months_with_data": 8,
         "months_with_income": 7,
-        "days_in_period": 227,
-        "last_record_date": "2026-08-15",
-        "record_count": 512
+        "days_in_period": 228,
+        "last_record_date": "2026-08-16",
+        "record_count": 514
       }
     },
     "2027": {
