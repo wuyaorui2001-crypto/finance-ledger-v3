@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-08-29T13:03:44",
+  "generated_at": "2026-09-04T21:55:20",
   "default_year": 2026,
   "years": {
     "2026": {
-      "total_expense": 68135.27,
-      "total_income": 25400.0,
-      "net_balance": -42735.27,
-      "expense_ratio": 268.2,
-      "monthly_avg_expense": 8516.91,
-      "monthly_avg_income": 3628.57,
-      "monthly_avg": 8516.91,
-      "daily_avg": 282.72,
+      "total_expense": 69035.27,
+      "total_income": 44400.0,
+      "net_balance": -24635.27,
+      "expense_ratio": 155.5,
+      "monthly_avg_expense": 7670.59,
+      "monthly_avg_income": 5550.0,
+      "monthly_avg": 7670.59,
+      "daily_avg": 279.5,
       "months": [
         {
           "month": "01",
@@ -78,20 +78,20 @@
         {
           "month": "08",
           "label": "8月",
-          "income": 0,
-          "expense": 6218.0,
-          "balance": -6218.0,
-          "expense_ratio": null,
+          "income": 19000.0,
+          "expense": 6518.0,
+          "balance": 12482.0,
+          "expense_ratio": 34.3,
           "has_data": true
         },
         {
           "month": "09",
           "label": "9月",
           "income": 0,
-          "expense": 0,
-          "balance": 0,
+          "expense": 600.0,
+          "balance": -600.0,
           "expense_ratio": null,
-          "has_data": false
+          "has_data": true
         },
         {
           "month": "10",
@@ -124,18 +124,18 @@
       "categories": [
         {
           "name": "生存基线",
-          "amount": 55167.0,
-          "percent": 81.0
+          "amount": 56067.0,
+          "percent": 81.2
         },
         {
           "name": "弹性消耗",
           "amount": 7045.0,
-          "percent": 10.3
+          "percent": 10.2
         },
         {
           "name": "精力与健康维护",
           "amount": 4627.0,
-          "percent": 6.8
+          "percent": 6.7
         },
         {
           "name": "杠杆与生产力",
@@ -149,11 +149,11 @@
         }
       ],
       "meta": {
-        "months_with_data": 8,
-        "months_with_income": 7,
-        "days_in_period": 241,
-        "last_record_date": "2026-08-29",
-        "record_count": 529
+        "months_with_data": 9,
+        "months_with_income": 8,
+        "days_in_period": 247,
+        "last_record_date": "2026-09-04",
+        "record_count": 536
       }
     },
     "2027": {
