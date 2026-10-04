@@ -256,6 +256,8 @@ def update_file_stats_panel(filepath: Path, year_stats: Dict[str, Any], monthly_
                 cat_lines_end = end + 1
             else:
                 break
+        while raw[cat_lines_end:cat_lines_end + 1] in ("\n", "\r"):
+            cat_lines_end += 1
 
         cat_lines_new = []
         for cat, amount in sorted(cat_break.items(), key=lambda x: x[1], reverse=True):
