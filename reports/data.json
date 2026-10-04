@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-10-04T12:26:23",
+  "generated_at": "2026-10-04T12:34:39",
   "default_year": 2026,
   "years": {
     "2026": {
       "total_expense": 77765.27,
-      "total_income": 44400.0,
-      "net_balance": -33365.27,
-      "expense_ratio": 175.1,
+      "total_income": 64400.0,
+      "net_balance": -13365.27,
+      "expense_ratio": 120.8,
       "monthly_avg_expense": 7776.53,
-      "monthly_avg_income": 5550.0,
+      "monthly_avg_income": 7155.56,
       "monthly_avg": 7776.53,
       "daily_avg": 280.74,
       "months": [
@@ -87,10 +87,10 @@
         {
           "month": "09",
           "label": "9月",
-          "income": 0,
+          "income": 20000.0,
           "expense": 7230.0,
-          "balance": -7230.0,
-          "expense_ratio": null,
+          "balance": 12770.0,
+          "expense_ratio": 36.1,
           "has_data": true
         },
         {
@@ -150,10 +150,10 @@
       ],
       "meta": {
         "months_with_data": 10,
-        "months_with_income": 8,
+        "months_with_income": 9,
         "days_in_period": 277,
         "last_record_date": "2026-10-04",
-        "record_count": 568
+        "record_count": 569
       }
     },
     "2027": {
