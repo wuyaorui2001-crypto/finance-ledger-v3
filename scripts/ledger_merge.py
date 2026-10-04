@@ -11,6 +11,7 @@ from collections import Counter
 
 RECORD_RE = re.compile(r'^- (\d{4}-(\d{2})-\d{2})\s*\|\s*(收入|支出)\s*\|')
 AMOUNT_RE = re.compile(r'[￥¥]([\d,]+\.?\d*)')
+TAG_RE = re.compile(r'\]\s*\|\s*(#[^\s|]+)')
 EOF_MARK = '--- EOF ---'
 INCOME_HEADER = '#### 当月收入'
 EXPENSE_HEADERS = ('#### 当月支出明细', '#### 当月流水明细')
@@ -143,17 +144,23 @@ def _remove_record(lines, record, count):
 
 
 def _record_key(line):
+    """日期 + 子标签 + 金额，用于识别两端各记了一次的同一笔"""
     m = RECORD_RE.match(line)
-    a = AMOUNT_RE.search(line)
-    if not m or not a:
+    tag = TAG_RE.search(line)
+    amount = AMOUNT_RE.search(line)
+    if not m or not tag or not amount:
         return None
-    return m.group(1), a.group(1).replace(',', '')
+    return m.group(1), tag.group(1), f"{float(amount.group(1).replace(',', '')):.2f}"
 
 
-def merge_year_text(base, ours, theirs):
+def merge_year_text(base, ours, theirs, duplicates='keep'):
     """
     返回 (合并后文本, 本地新增条数, 本地删除条数, 疑似重复列表)。
     ours/theirs 为 None 表示该侧没有这个文件。
+
+    疑似重复 = 本地新增的记录，与远程同期新增的记录日期、子标签、金额都相同。
+    duplicates='keep' 两条都保留；'drop' 丢弃本地这条，以远程为准。
+    疑似重复列表元素为 (本地记录, 远程记录)。
     """
     if theirs is None:
         return ours, 0, 0, []
@@ -170,21 +177,26 @@ def merge_year_text(base, ours, theirs):
             _remove_record(lines, record, -delta)
             removed += -delta
 
-    local_added = []
+    remote_added = Counter()
+    remote_by_key = {}
+    for record, n in t.items():
+        key = _record_key(record)
+        if key and n - b[record] > 0:
+            remote_added[key] += n - b[record]
+            remote_by_key.setdefault(key, record)
+
+    suspects = []
     for record in sorted(o, key=lambda r: RECORD_RE.match(r).group(1)):
         delta = o[record] - b[record]
+        key = _record_key(record)
         for _ in range(max(delta, 0)):
+            if key and remote_added[key] > 0:
+                remote_added[key] -= 1
+                suspects.append((record, remote_by_key[key]))
+                if duplicates == 'drop':
+                    continue
             _insert_record(lines, record)
-            local_added.append(record)
             added += 1
-
-    remote_added_keys = Counter()
-    for record, n in t.items():
-        if n - b[record] > 0:
-            key = _record_key(record)
-            if key:
-                remote_added_keys[key] += n - b[record]
-    suspects = [r for r in local_added if _record_key(r) in remote_added_keys]
 
     merged = '\n'.join(lines)
     if theirs.endswith('\n'):

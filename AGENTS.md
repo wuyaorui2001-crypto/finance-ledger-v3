@@ -57,7 +57,9 @@ python auto-sync.py
 - 记账前先 `git pull`，在最新账本上追加
 - 只用 `auto-sync.py` 推送：它会先拉取远程，按流水行把本地新增/删除叠加到远程版本，再重算面板后提交；推送被拒会自动重新合并
 - 合并前的本地状态备份在 `refs/ledger-backup/<时间>`
-- 输出 `疑似两端重复记账` 时，向用户确认后删掉多余的一条
+- 两端新增了同日期、同子标签、同金额的记录时，`auto-sync.py` 会停下（退出码 2），不提交、不推送、不改本地账本。把列出的两条给用户确认后重新运行：
+  - 是同一笔：`python auto-sync.py --drop-duplicates`（丢掉本地这条）
+  - 不是同一笔：`python auto-sync.py --keep-duplicates`（两条都保留）
 
 ## 校验
 
