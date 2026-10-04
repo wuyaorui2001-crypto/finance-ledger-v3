@@ -52,6 +52,13 @@ python scripts/visualize.py
 python auto-sync.py
 ```
 
+## 多端记账（本机 / 云端 Agent）
+
+- 记账前先 `git pull`，在最新账本上追加
+- 只用 `auto-sync.py` 推送：它会先拉取远程，按流水行把本地新增/删除叠加到远程版本，再重算面板后提交；推送被拒会自动重新合并
+- 合并前的本地状态备份在 `refs/ledger-backup/<时间>`
+- 输出 `疑似两端重复记账` 时，向用户确认后删掉多余的一条
+
 ## 校验
 
 ```bash
