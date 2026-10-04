@@ -68,17 +68,58 @@ def git_show(project_dir, rev, path):
     return result.stdout if result.returncode == 0 else None
 
 
-def proxy_url():
-    """本机代理可用时返回代理地址（LEDGER_GIT_PROXY 可覆盖，设为空则禁用）"""
-    url = os.environ.get('LEDGER_GIT_PROXY', DEFAULT_PROXY)
-    if not url:
+def windows_system_proxy():
+    """读取 Windows「系统代理」设置（代理软件开启系统代理时写入）"""
+    if sys.platform != 'win32':
         return None
-    parsed = urlparse(url)
     try:
-        with socket.create_connection((parsed.hostname, parsed.port), timeout=0.5):
-            return url
+        import winreg
+        key = winreg.OpenKey(
+            winreg.HKEY_CURRENT_USER,
+            r'Software\Microsoft\Windows\CurrentVersion\Internet Settings'
+        )
+        if not winreg.QueryValueEx(key, 'ProxyEnable')[0]:
+            return None
+        server = winreg.QueryValueEx(key, 'ProxyServer')[0]
     except OSError:
         return None
+    # 形如 "127.0.0.1:7897" 或 "http=127.0.0.1:7897;https=127.0.0.1:7897"
+    for part in server.split(';'):
+        part = part.split('=', 1)[-1].strip()
+        if part:
+            return part if '://' in part else f'http://{part}'
+    return None
+
+
+def proxy_reachable(url):
+    parsed = urlparse(url)
+    if not parsed.hostname or not parsed.port:
+        return False
+    try:
+        with socket.create_connection((parsed.hostname, parsed.port), timeout=0.5):
+            return True
+    except OSError:
+        return False
+
+
+def proxy_url():
+    """
+    找一个能连上的本机代理；都连不上就返回 None（直连）。
+    顺序：LEDGER_GIT_PROXY（设为空则禁用代理）→ HTTPS_PROXY/HTTP_PROXY → Windows 系统代理 → 7890
+    """
+    if 'LEDGER_GIT_PROXY' in os.environ:
+        candidates = [os.environ['LEDGER_GIT_PROXY']]
+    else:
+        candidates = [
+            os.environ.get('HTTPS_PROXY') or os.environ.get('https_proxy'),
+            os.environ.get('HTTP_PROXY') or os.environ.get('http_proxy'),
+            windows_system_proxy(),
+            DEFAULT_PROXY,
+        ]
+    for url in candidates:
+        if url and proxy_reachable(url):
+            return url
+    return None
 
 
 def run_git_network(args, cwd):
