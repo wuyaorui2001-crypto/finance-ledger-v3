@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-10-04T22:59:34",
+  "generated_at": "2026-10-05T01:18:00",
   "default_year": 2026,
   "years": {
     "2026": {
-      "total_expense": 78405.27,
+      "total_expense": 78445.27,
       "total_income": 64400.0,
-      "net_balance": -14005.27,
-      "expense_ratio": 121.7,
-      "monthly_avg_expense": 7840.53,
+      "net_balance": -14045.27,
+      "expense_ratio": 121.8,
+      "monthly_avg_expense": 7844.53,
       "monthly_avg_income": 7155.56,
-      "monthly_avg": 7840.53,
-      "daily_avg": 283.05,
+      "monthly_avg": 7844.53,
+      "daily_avg": 282.18,
       "months": [
         {
           "month": "01",
@@ -97,8 +97,8 @@
           "month": "10",
           "label": "10月",
           "income": 0,
-          "expense": 2740.0,
-          "balance": -2740.0,
+          "expense": 2780.0,
+          "balance": -2780.0,
           "expense_ratio": null,
           "has_data": true
         },
@@ -124,8 +124,8 @@
       "categories": [
         {
           "name": "生存基线",
-          "amount": 63467.0,
-          "percent": 80.9
+          "amount": 63507.0,
+          "percent": 81.0
         },
         {
           "name": "弹性消耗",
@@ -151,9 +151,9 @@
       "meta": {
         "months_with_data": 10,
         "months_with_income": 9,
-        "days_in_period": 277,
+        "days_in_period": 278,
         "last_record_date": "2026-10-05",
-        "record_count": 575
+        "record_count": 576
       }
     },
     "2027": {
