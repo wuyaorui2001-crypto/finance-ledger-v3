@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-10-05T01:18:00",
+  "generated_at": "2026-10-05T01:50:58",
   "default_year": 2026,
   "years": {
     "2026": {
-      "total_expense": 78445.27,
+      "total_expense": 78535.27,
       "total_income": 64400.0,
-      "net_balance": -14045.27,
-      "expense_ratio": 121.8,
-      "monthly_avg_expense": 7844.53,
+      "net_balance": -14135.27,
+      "expense_ratio": 121.9,
+      "monthly_avg_expense": 7853.53,
       "monthly_avg_income": 7155.56,
-      "monthly_avg": 7844.53,
-      "daily_avg": 282.18,
+      "monthly_avg": 7853.53,
+      "daily_avg": 282.5,
       "months": [
         {
           "month": "01",
@@ -97,8 +97,8 @@
           "month": "10",
           "label": "10月",
           "income": 0,
-          "expense": 2780.0,
-          "balance": -2780.0,
+          "expense": 2870.0,
+          "balance": -2870.0,
           "expense_ratio": null,
           "has_data": true
         },
@@ -125,7 +125,7 @@
         {
           "name": "生存基线",
           "amount": 63507.0,
-          "percent": 81.0
+          "percent": 80.9
         },
         {
           "name": "弹性消耗",
@@ -134,8 +134,8 @@
         },
         {
           "name": "精力与健康维护",
-          "amount": 4627.0,
-          "percent": 5.9
+          "amount": 4717.0,
+          "percent": 6.0
         },
         {
           "name": "杠杆与生产力",
@@ -153,7 +153,7 @@
         "months_with_income": 9,
         "days_in_period": 278,
         "last_record_date": "2026-10-05",
-        "record_count": 576
+        "record_count": 577
       }
     },
     "2027": {
