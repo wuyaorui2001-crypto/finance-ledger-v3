@@ -73,3 +73,9 @@ python scripts/validate.py
 - 线上：https://wuyaorui2001-crypto.github.io/finance-ledger-v3/
 
 仪表盘含：总收入、净结余、支出占收入、每月收支双柱图。
+
+## Cursor Cloud specific instructions
+
+- 镜像自带 Python 3.12（记账脚本兼容 CI 使用的 3.11+）。`install` 把 `python` 指到 `python3`，并安装 `pandas==3.0.6` 与 `akshare==1.19.1`。这两包只给 `scripts/calc_513500_premium.py` 用，其余脚本是标准库。
+- `start` 在 8080 端口托管 `reports/`（`python3 -m http.server`）。仪表盘：http://127.0.0.1:8080/ 。端口已在监听时脚本直接退出，可以重复执行。
+- 自检用 `python scripts/validate.py`、`python scripts/recalc.py`（只打印）、`python scripts/visualize.py`（重写 `reports/data.json`）。不要用 `auto-sync.py` 做环境自检，它会提交并推远程。
