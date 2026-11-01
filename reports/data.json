@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-11-01T02:37:24",
+  "generated_at": "2026-11-01T02:38:34",
   "default_year": 2026,
   "years": {
     "2026": {
-      "total_expense": 82234.27,
+      "total_expense": 82334.27,
       "total_income": 83400.0,
-      "net_balance": 1165.73,
-      "expense_ratio": 98.6,
-      "monthly_avg_expense": 8223.43,
+      "net_balance": 1065.73,
+      "expense_ratio": 98.7,
+      "monthly_avg_expense": 7484.93,
       "monthly_avg_income": 8340.0,
-      "monthly_avg": 8223.43,
-      "daily_avg": 270.51,
+      "monthly_avg": 7484.93,
+      "daily_avg": 269.95,
       "months": [
         {
           "month": "01",
@@ -106,10 +106,10 @@
           "month": "11",
           "label": "11月",
           "income": 0,
-          "expense": 0,
-          "balance": 0,
+          "expense": 100.0,
+          "balance": -100.0,
           "expense_ratio": null,
-          "has_data": false
+          "has_data": true
         },
         {
           "month": "12",
@@ -124,7 +124,7 @@
       "categories": [
         {
           "name": "生存基线",
-          "amount": 66429.0,
+          "amount": 66529.0,
           "percent": 80.8
         },
         {
@@ -149,11 +149,11 @@
         }
       ],
       "meta": {
-        "months_with_data": 10,
+        "months_with_data": 11,
         "months_with_income": 10,
-        "days_in_period": 304,
-        "last_record_date": "2026-10-31",
-        "record_count": 649
+        "days_in_period": 305,
+        "last_record_date": "2026-11-01",
+        "record_count": 650
       }
     },
     "2027": {
