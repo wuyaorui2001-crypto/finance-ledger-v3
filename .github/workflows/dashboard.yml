@@ -16,9 +16,10 @@ permissions:
   pages: write
   id-token: write
 
+# 新部署取消旧部署：看板只需最新版本，且避免某次部署卡在 waiting 时堵住后续所有部署
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
