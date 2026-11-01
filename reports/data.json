@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-10-25T12:06:44",
+  "generated_at": "2026-11-01T02:37:24",
   "default_year": 2026,
   "years": {
     "2026": {
-      "total_expense": 81184.27,
-      "total_income": 64400.0,
-      "net_balance": -16784.27,
-      "expense_ratio": 126.1,
-      "monthly_avg_expense": 8118.43,
-      "monthly_avg_income": 7155.56,
-      "monthly_avg": 8118.43,
-      "daily_avg": 272.43,
+      "total_expense": 82234.27,
+      "total_income": 83400.0,
+      "net_balance": 1165.73,
+      "expense_ratio": 98.6,
+      "monthly_avg_expense": 8223.43,
+      "monthly_avg_income": 8340.0,
+      "monthly_avg": 8223.43,
+      "daily_avg": 270.51,
       "months": [
         {
           "month": "01",
@@ -96,10 +96,10 @@
         {
           "month": "10",
           "label": "10月",
-          "income": 0,
-          "expense": 5519.0,
-          "balance": -5519.0,
-          "expense_ratio": null,
+          "income": 19000.0,
+          "expense": 6569.0,
+          "balance": 12431.0,
+          "expense_ratio": 34.6,
           "has_data": true
         },
         {
@@ -124,23 +124,23 @@
       "categories": [
         {
           "name": "生存基线",
-          "amount": 65379.0,
-          "percent": 80.5
+          "amount": 66429.0,
+          "percent": 80.8
         },
         {
           "name": "弹性消耗",
           "amount": 8806.0,
-          "percent": 10.8
+          "percent": 10.7
         },
         {
           "name": "精力与健康维护",
           "amount": 5123.0,
-          "percent": 6.3
+          "percent": 6.2
         },
         {
           "name": "杠杆与生产力",
           "amount": 1676.27,
-          "percent": 2.1
+          "percent": 2.0
         },
         {
           "name": "资产与储备",
@@ -150,10 +150,10 @@
       ],
       "meta": {
         "months_with_data": 10,
-        "months_with_income": 9,
-        "days_in_period": 298,
-        "last_record_date": "2026-10-25",
-        "record_count": 641
+        "months_with_income": 10,
+        "days_in_period": 304,
+        "last_record_date": "2026-10-31",
+        "record_count": 649
       }
     },
     "2027": {
